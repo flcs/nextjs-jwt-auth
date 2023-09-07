@@ -8,16 +8,21 @@ import { useLogout } from "../src/hooks/auth/useLogout";
 export default function Profile() {
   const [editMode, setEditMode] = useState(false);
   const [newAvatarUrl, setNewAvatarUrl] = useState("");
+  
   const { user: currentUser, refetchUser } = useCurrentUser();
+
   const { logout } = useLogout();
   const router = useRouter();
 
   const getNewAvatarUrl = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setEditMode(true);
-      setNewAvatarUrl(URL.createObjectURL(e.target.files[0]));
+      const novo_url = URL.createObjectURL(e.target.files[0]);
+      setNewAvatarUrl(novo_url);
     }
   };
+
+
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
