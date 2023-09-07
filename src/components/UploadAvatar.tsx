@@ -20,10 +20,12 @@ export const UploadAvatar: React.FC<Props> = ({
 
   const getCropData = async () => {
     if (cropper) {
-      const file = await fetch(cropper.getCroppedCanvas().toDataURL())
+      try {
+      const croppedData = cropper.getCroppedCanvas().toDataURL();
+      const file = await fetch(croppedData)
         .then((res) => res.blob())
         .then((blob) => {
-          return new File([blob], "newAvatar.png", { type: "image/png" });
+          return new File([blob], "AvatarUser_"+userId+".png", { type: "image/png" });
         });
       if (file) {
         authService
@@ -33,6 +35,10 @@ export const UploadAvatar: React.FC<Props> = ({
             cancelEdit();
           })
           .catch((e) => alert(e));
+
+      }
+      } catch (error) {
+        const mensagem = (error as Error).message;
       }
     }
   };
