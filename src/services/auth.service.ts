@@ -34,21 +34,28 @@ export class AuthService {
         headers: getAuthorizationHeader(),
       })
       .then((res) => {
-        return res.data;
+        return res.data.url;
       });
   };
 
-  uploadAvatar = (userId: string, newAvatar: File) => {
+  uploadAvatar = async (userId: string, newAvatar: File) => {
     const formData = new FormData();
     formData.append("file", newAvatar);
-    return this.instance
+    const retorno = await this.instance
       .post(`/users/${userId}/upload`, formData, {
         headers: getAuthorizationHeader(),
       })
       .then((res) => {
         return {
-          newAvatar: res.data.data.url,
+          // newAvatar: res.data.data.url,
+          newAvatar: res.data.url,
+        };
+      })
+      .catch((err) => {
+        return {
+          newAvatar: "",
         };
       });
+    return retorno;
   };
 }
